@@ -16,7 +16,7 @@ export function useSettingsItems() {
 	const uiStore = useUIStore();
 	const settingsStore = useSettingsStore();
 	const { canUserAccessRouteByName } = useUserHelpers(router);
-	const { creditsRemaining } = useAiGateway();
+	const { balance } = useAiGateway();
 
 	const settingsItems = computed<IMenuItem[]>(() => {
 		const menuItems: IMenuItem[] = [
@@ -62,11 +62,7 @@ export function useSettingsItems() {
 					settingsStore.isAiGatewayEnabled && canUserAccessRouteByName(VIEWS.AI_GATEWAY_SETTINGS),
 				route: { to: { name: VIEWS.AI_GATEWAY_SETTINGS } },
 				creditsTag:
-					creditsRemaining.value !== undefined
-						? i18n.baseText('aiGateway.credentialMode.creditsShort', {
-								interpolate: { count: String(creditsRemaining.value) },
-							})
-						: undefined,
+					balance.value !== undefined ? `$${Number(balance.value).toFixed(2)}` : undefined,
 			},
 			{
 				id: 'settings-project-roles',
