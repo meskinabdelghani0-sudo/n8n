@@ -89,9 +89,10 @@ jobs:
         id: generate-matrix
         env:
           CHANGED_FILES: ${{ steps.changed-files.outputs.list }}
+          PLAYWRIGHT_ONLY: ${{ inputs.playwright-only }}
         run: |
           ARGS=(--matrix 16 --orchestrate)
-          if [[ "${{ inputs.playwright-only }}" == "true" ]]; then
+          if [[ "$PLAYWRIGHT_ONLY" == "true" ]]; then
             ARGS+=(--impact "--files=$CHANGED_FILES" "--base=FETCH_HEAD")
           fi
           MATRIX=$(node packages/testing/playwright/scripts/distribute-tests.mjs "${ARGS[@]}")
